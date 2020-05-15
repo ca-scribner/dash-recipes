@@ -6,7 +6,7 @@ from typing import Union
 import dash
 import dash_html_components as html
 from dash.dependencies import Input, Output, ALL, State
-
+import dash_bootstrap_components as dbc
 
 app = dash.Dash(__name__)
 app.config['suppress_callback_exceptions'] = True
@@ -334,20 +334,49 @@ def watch_sidebar_children(ul_children):
 
 
 # Define the dash app layout
-app.layout = html.Div(
-    [
-        html.Div(id="sidebar-div",
-                 children=make_sidebar_ul(fake_data,
-                                          "Top Level",
-                                          )
-                 ),
-        html.Div(id='checked-items',
-                 children=[
-                     html.H1("Checked Items:"),
-                     html.P(id="checked-items-p")
-                 ]),
-    ]
-)
+app.layout = html.Div([
+    html.H1("Dash App with Sidebar using Dash Boostrap Components"),
+    dbc.Container(
+        [
+            dbc.Row(
+                children=[
+                    dbc.Col(
+                            children=html.Div([
+                                make_sidebar_ul(fake_data, "Top Level")
+                            ]),
+                            id="sidebar-div",
+                            # width=3,  # Static width
+                            lg=3, md=4, xs=6,  # Responsive widths
+                            # style=SIDEBAR_STYLE,
+                            ),
+                    dbc.Col(
+                            children=[
+                                 html.P(id="checked-items-p"),
+                             ],
+                            id='content-col',
+                            lg=9, md=8, xs=6,
+                    ),
+                ],
+                # no_gutters=True,
+            ),
+        ],
+        fluid=True,  # Rows fill the entire width.  Otherwise I get a huge margin to the left of the sidebar
+    ),
+])
+# app.layout = html.Div(
+#     [
+#         html.Div(id="sidebar-div",
+#                  children=make_sidebar_ul(fake_data,
+#                                           "Top Level",
+#                                           )
+#                  ),
+#         html.Div(id='checked-items',
+#                  children=[
+#                      html.H1("Checked Items:"),
+#                      html.P(id="checked-items-p")
+#                  ]),
+#     ]
+# )
 
 if __name__ == '__main__':
     # Hacky way to auto pick a port
